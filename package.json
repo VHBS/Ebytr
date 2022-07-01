@@ -4,6 +4,8 @@
   "description": "Fullstack todo project.",
   "main": "index.js",
   "scripts": {
+    "compose:up": "docker compose up -d",
+    "compose:down": "docker compose down",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
