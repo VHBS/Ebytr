@@ -1,11 +1,5 @@
 const createTaskController = require('./controller/taskController');
-const express = require('express');
-const cors = require('cors');
-
-const app = express();
-
-app.use(cors())
-app.use(express.json());
+const app = require('./app');
 
 app.post('/task', createTaskController.create)
 
