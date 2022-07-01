@@ -1,0 +1,19 @@
+{
+  "name": "ebytr",
+  "version": "1.0.0",
+  "description": "Fullstack todo project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VHBS/Ebytr.git"
+  },
+  "author": "Victor Hugo Baum Schlichting",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VHBS/Ebytr/issues"
+  },
+  "homepage": "https://github.com/VHBS/Ebytr#readme"
+}
