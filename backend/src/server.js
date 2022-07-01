@@ -1,10 +1,10 @@
 const express = require('express');
+const createTaskController = require('./controller/taskController');
 
 const app = express();
+app.use(express.json());
 
-app.get('/', (_req, res) => {
-  return res.status(200).json({ message: 'ok' })
-})
+app.post('/task', createTaskController.create)
 
 const { PORT } = process.env;
 app.listen(PORT, () => console.log(`Escutando na porta ${process.env.PORT}`));
