@@ -10,4 +10,9 @@ const update = async ({ id, task, status, priority }) => {
   return updatedTask;
 }
 
-module.exports = { create, update };
+const getAll = async () => {
+  const allTasks = await Task.findAll();
+  return allTasks;
+}
+
+module.exports = { create, update, getAll };

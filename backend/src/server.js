@@ -1,6 +1,7 @@
 const createTaskController = require('./controller/taskController');
 const app = require('./app');
 
+app.get('/task', createTaskController.getAll)
 app.post('/task', createTaskController.create)
 app.put('/task', createTaskController.update)
 
