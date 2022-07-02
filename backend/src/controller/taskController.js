@@ -11,4 +11,15 @@ const create = async (req, res) => {
   }
 }
 
-module.exports = { create };
+const update = async (req, res) => {
+  try {
+    const { id, task, status, priority } = req.body;
+    const updatedTask = await createTaskService.update({ id, task, status, priority })
+    return res.status(201).json(updatedTask);
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: "Internal server error!" })
+  }
+}
+
+module.exports = { create, update };

@@ -5,4 +5,9 @@ const create = async  ({ task, status, priority }) => {
   return newTask;
 };
 
-module.exports = { create };
+const update = async ({ id, task, status, priority }) => {
+  const updatedTask = await Task.update({ task, status, priority, updatedAt: new Date() }, { where: { id }});
+  return updatedTask;
+}
+
+module.exports = { create, update };
