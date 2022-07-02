@@ -22,31 +22,26 @@ services:
   #     retries: 5
   backend:
     build: ./backend
-    platform: linux/x86_64
-    restart: always
     container_name: app_backend
+    platform: linux/x86_64
+    restart: 'always'
     command: npm run dev
-    working_dir: /app
-    volumes:
-      - ./backend/:/app
     ports:
       - 3001:3001
+    volumes:
+      - './backend/src:/app/src'
     environment:
       - PORT=3001
       - DB_USER=root
       - DB_PASS=123456
-      - DB_HOST=db
+      - DB_HOST=db_mysql
       - DB_NAME=EBYTR
       - DB_PORT=3306
     depends_on:
-      db:
+      db_mysql:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:3001"]
-      timeout: 10s
-      retries: 5
-  db:
-    image: mysql
+  db_mysql:
+    image: mysql:8.0.21
     container_name: db_mysql
     platform: linux/x86_64
     restart: 'always'
