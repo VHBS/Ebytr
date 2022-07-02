@@ -15,4 +15,9 @@ const getAll = async () => {
   return allTasks;
 }
 
-module.exports = { create, update, getAll };
+const destroy = async ({ id }) => {
+  const updatedTask = await Task.destroy({ where: { id }});
+  return updatedTask;
+}
+
+module.exports = { create, update, getAll, destroy };

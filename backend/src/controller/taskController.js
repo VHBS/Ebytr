@@ -32,4 +32,15 @@ const getAll = async (_req, res) => {
   }
 }
 
-module.exports = { create, update, getAll };
+const destroy = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const updatedTask = await createTaskService.destroy({ id })
+    return res.status(204).json(updatedTask);
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: "Internal server error!" })
+  }
+}
+
+module.exports = { create, update, getAll, destroy };
