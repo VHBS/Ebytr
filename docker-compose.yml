@@ -1,25 +1,21 @@
 version: '3.9'
 services:
-  # frontend:
-  #   image: node
-  #   platform: linux/x86_64
-  #   restart: always
-  #   container_name: app_frontend
-  #   working_dir: /app
-  #   command: npm install && npm start
-  #   volumes:
-  #     - ./frontend/:/app
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     backend:
-  #       condition: service_healthy
-  #   # Os `healthcheck` devem garantir que a aplicação
-  #   # está operacional, antes de liberar o container
-  #   healthcheck:
-  #     test: ["CMD", "lsof", "-t", "-i:3000"]  # Caso utilize outra porta interna para o front, altere ela aqui também
-  #     timeout: 10s
-  #     retries: 5
+  frontend:
+    build: ./frontend
+    platform: linux/x86_64
+    restart: always
+    container_name: app_frontend
+    volumes:
+      - './frontend/src:/app/src'
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3000"]
+      timeout: 10s
+      retries: 5
   backend:
     build: ./backend
     container_name: app_backend
@@ -40,6 +36,10 @@ services:
     depends_on:
       db_mysql:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3001"]
+      timeout: 10s
+      retries: 5
   db_mysql:
     image: mysql:8.0.21
     container_name: db_mysql
