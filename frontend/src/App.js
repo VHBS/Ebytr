@@ -1,21 +1,24 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import { requestTasks } from './services/requests';
+import { requestGetAllTasks, requestDeleteTask, requestPostTask } from './services/requests';
 
 function App() {
+  const [loadingTasks, setLoadingTasks] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [status, setStatus] = useState('to do')
   const [priority, setPriority] = useState('low')
   const [task, setTask] = useState('')
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await requestTasks();
-      setTasks(result)
-      console.log(result)
-    }
-    fetchData();
+    fetchDataTasks();
   }, []);
+  
+  const fetchDataTasks = async () => {
+    setLoadingTasks(true)
+    const result = await requestGetAllTasks();
+    setTasks(result)
+    setLoadingTasks(false)
+  }
 
   const handleChangeStatus = ({ target: { value }}) => {
     setStatus(value)
@@ -27,6 +30,24 @@ function App() {
 
   const handleChangeTask = ({ target: { value }}) => {
     setTask(value)
+  }
+
+  const handleDeleteTask = async (id) => {
+    setLoadingTasks(true)
+    await requestDeleteTask(id)
+    await fetchDataTasks()
+    setLoadingTasks(false)
+  }
+
+  const handleAddNewTask = async (event) => {
+    event.preventDefault();
+    setLoadingTasks(true)
+    await requestPostTask({ task, status, priority });
+    await fetchDataTasks()
+    setTask('');
+    setStatus('to do');
+    setPriority('low');
+    setLoadingTasks(false)
   }
 
   return (
@@ -51,8 +72,9 @@ function App() {
             </select>
           </label>
           <input placeholder='Insert new task' value={task} onChange={ handleChangeTask }/>
+          <button onClick={handleAddNewTask}>Add new task</button>
       </form>
-      { tasks.length !== 0 ? (
+      { loadingTasks ? <h3>Loading...</h3> : tasks.length !== 0 ? (
         <div>
           {tasks.map((task) => {
             return (
@@ -61,7 +83,7 @@ function App() {
               <p>{task.status}</p>
               <p>{task.priority}</p>
               <button>Editar</button>
-              <button>Excluir</button>
+              <button onClick={ async () => await handleDeleteTask(task.id) }>Excluir</button>
             </div>)
           })}
         </div>
