@@ -1,28 +1,36 @@
 version: '3.9'
 services:
-  frontend:
-    image: node
-    platform: linux/x86_64
-    container_name: app_frontend
-    working_dir: /app
-    command: bash -c "npm install && npm start"
-    volumes:
-      - ./frontend/:/app
-    ports:
-      - "3000:3000"
-    restart: always
-    depends_on: 
-      - backend
+  # frontend:
+  #   image: node
+  #   platform: linux/x86_64
+  #   restart: always
+  #   container_name: app_frontend
+  #   working_dir: /app
+  #   command: npm install && npm start
+  #   volumes:
+  #     - ./frontend/:/app
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     backend:
+  #       condition: service_healthy
+  #   # Os `healthcheck` devem garantir que a aplicação
+  #   # está operacional, antes de liberar o container
+  #   healthcheck:
+  #     test: ["CMD", "lsof", "-t", "-i:3000"]  # Caso utilize outra porta interna para o front, altere ela aqui também
+  #     timeout: 10s
+  #     retries: 5
   backend:
-    image: node
+    build: ./backend
     platform: linux/x86_64
+    restart: always
     container_name: app_backend
+    command: npm run dev
     working_dir: /app
-    command: bash -c "npm install && npm run dev"
     volumes:
       - ./backend/:/app
     ports:
-      - "3001:3001"
+      - 3001:3001
     environment:
       - PORT=3001
       - DB_USER=root
@@ -30,15 +38,25 @@ services:
       - DB_HOST=db
       - DB_NAME=EBYTR
       - DB_PORT=3306
-    restart: always
-    depends_on: 
-      - db
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3001"]
+      timeout: 10s
+      retries: 5
   db:
-    image: mysql 
+    image: mysql
     container_name: db_mysql
     platform: linux/x86_64
+    restart: 'always'
     ports:
       - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=123456
-    restart: 'always'
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        timeout: 15s
+        retries: 5
+    cap_add:
+        - SYS_NICE
