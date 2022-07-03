@@ -1,4 +1,16 @@
 {
+  "overrides": [
+    {
+      "files": [
+        "**/*.test.js",
+        "**/*.test.jsx"
+      ],
+      "env": {
+        "jest": true
+      }
+    }
+  ],
+  "ignorePatterns": ["*.test.js"],
     "env": {
         "browser": true,
         "es2021": true
