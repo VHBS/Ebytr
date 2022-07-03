@@ -1,38 +1,91 @@
+* {
+  margin: 0;
+  padding: 0;
+  border:0;
+  vertical-align: baseline;
+  color: #252422;
+}
+
+body {
+  background-color: #ccc5b9;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.App h1 {
+  margin-block: 1em;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+form {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  align-items: center;
+  justify-content: space-between;
+  height: 200px;
+  background-color: #fffcf2;
+  padding: 1em;
+  border-radius: 1em;
+  box-shadow: 0.1em 0.1em 0.5em 0.1em #403d391a;
 }
+
+button {
+  padding: 0.5em;
+  color: #fffcf2;
+  background-color: #eb5e28;
+  border-radius: 0.5em;
+  border: 0.1em solid #ccc5b9;
+}
+
+.selects {
+  display: flex;
+  width: 300px;
+  justify-content: space-around;
+}
+
+.tasks {
+  background-color: #fffcf2;
+  width: 50%;
+  padding: 1em;
+  border-radius: 0 0 1em 1em;
+  box-shadow: 0.1em 0.1em 0.5em 0.1em #403d391a;
+}
+
+.task {
+  display: flex;
+  border-bottom: 0.1em solid #ccc5b9;
+  margin-top: 1em;
+}
+
+.taskDescription {
+  /* background-color: aqua; */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  word-break: break-all; 
+  min-height: 100px;
+  word-wrap: break-word;
+}
+
+.sideTaskCollum {
+  margin-right: 1em;
+}
+
+.sideTaskCollum h6 {
+  margin-block-end: 0.5em;
+}
+
+.sideTaskCollum p {
+  margin-block-end: 0.5em;
+}
+
+.buttonTasks {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+

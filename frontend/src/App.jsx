@@ -95,23 +95,30 @@ function App() {
       <h1>Todolist</h1>
       <form>
         { editingTask ? <h3>Editing Task</h3> : <h3>New Task</h3> }
-        <label htmlFor="status">
-          Status:
-          <select name="status" value={status} onChange={handleChangeStatus}>
-            <option value="to do">to do</option>
-            <option value="in progress">in progress</option>
-            <option value="completed">completed</option>
-          </select>
-        </label>
-        <label htmlFor="priority">
-          Priority:
-          <select name="priority" value={priority} onChange={handleChangePriority}>
-            <option value="low">low</option>
-            <option value="medium">medium</option>
-            <option value="high">high</option>
-          </select>
-        </label>
+        <div className="selects">
+          <label htmlFor="status">
+            Status:
+            <select name="status" value={status} onChange={handleChangeStatus}>
+              <option value="to do">to do</option>
+              <option value="in progress">in progress</option>
+              <option value="completed">completed</option>
+            </select>
+          </label>
+          <label htmlFor="priority">
+            Priority:
+            <select name="priority" value={priority} onChange={handleChangePriority}>
+              <option value="low">low</option>
+              <option value="medium">medium</option>
+              <option value="high">high</option>
+            </select>
+          </label>
+        </div>
         <input placeholder="Insert new task" value={task} onChange={handleChangeTask} />
+        { blankTask && (
+        <div>
+          <p>Task is mandatory</p>
+        </div>
+        )}
         { editingTask
           ? (
             <div>
@@ -119,22 +126,26 @@ function App() {
               <button type="button" onClick={handleCancelEditTask}>Cancel</button>
             </div>
           ) : <button type="button" onClick={handleAddNewTask}>Add new task</button> }
-        { blankTask && (
-        <div>
-          <p>Task is mandatory</p>
-        </div>
-        )}
       </form>
       { tasks.length === 0 && loadingTasks === false && <h1>Don&apos;t have any task</h1>}
       { loadingTasks ? <h3>Loading...</h3> : (
-        <div>
+        <div className="tasks">
           {tasks.map((taskObj) => (
-            <div key={taskObj.id}>
-              <p>{taskObj.task}</p>
-              <p>{taskObj.status}</p>
-              <p>{taskObj.priority}</p>
-              <button type="button" onClick={() => handleEditTask(taskObj)}>Editar</button>
-              <button type="button" onClick={async () => handleDeleteTask(taskObj.id)}>Excluir</button>
+            <div className="task" key={taskObj.id}>
+              <div className="sideTaskCollum">
+                <h6>Status:</h6>
+                <p>{taskObj.status}</p>
+                <h6>Priority:</h6>
+                <p>{taskObj.priority}</p>
+              </div>
+              <div className="taskDescription">
+                <h3>Task</h3>
+                <p>{taskObj.task}</p>
+              </div>
+              <div className="buttonTasks">
+                <button type="button" onClick={() => handleEditTask(taskObj)}>Editar</button>
+                <button type="button" onClick={async () => handleDeleteTask(taskObj.id)}>Excluir</button>
+              </div>
             </div>
           ))}
         </div>
