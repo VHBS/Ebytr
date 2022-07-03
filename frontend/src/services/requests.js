@@ -16,3 +16,6 @@ export const requestPostTask = async ({ task, status, priority }) => {
   await api.post('/task', { task, status, priority });
 }
 
+export const requestPutTask = async ({ id, task, status, priority }) => {
+  await api.put('/task', { id, task, status, priority });
+}
