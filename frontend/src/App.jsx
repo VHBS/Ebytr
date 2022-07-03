@@ -8,6 +8,7 @@ import {
 } from './services/requests';
 
 function App() {
+  const [blankTask, setBalnkTask] = useState(false);
   const [editingTask, setEditingTask] = useState(false);
   const [loadingTasks, setLoadingTasks] = useState(false);
   const [tasks, setTasks] = useState([]);
@@ -20,7 +21,7 @@ function App() {
     setLoadingTasks(true);
     const result = await requestGetAllTasks();
     setTasks(result);
-    setTimeout(() => setLoadingTasks(false), 300);
+    setTimeout(() => setLoadingTasks(false), 150);
   };
 
   useEffect(() => {
@@ -53,9 +54,13 @@ function App() {
   };
 
   const handleAddNewTask = async () => {
+    if (task === '') {
+      return setBalnkTask(true);
+    }
+    setBalnkTask(false);
     await requestPostTask({ task, status, priority });
     await fetchDataTasks();
-    handleResetForm();
+    return handleResetForm();
   };
 
   const handleEditTask = (taskToEdit) => {
@@ -72,13 +77,17 @@ function App() {
   };
 
   const handleConfirmEditTask = async () => {
+    if (task === '') {
+      return setBalnkTask(true);
+    }
     await requestPutTask({
       id: idTask, task, status, priority,
     });
+    setBalnkTask(false);
     handleResetForm();
     setEditingTask(false);
     await fetchDataTasks();
-    setLoadingTasks(false);
+    return setLoadingTasks(false);
   };
 
   return (
@@ -110,6 +119,11 @@ function App() {
               <button type="button" onClick={handleCancelEditTask}>Cancel</button>
             </div>
           ) : <button type="button" onClick={handleAddNewTask}>Add new task</button> }
+        { blankTask && (
+        <div>
+          <p>Task is mandatory</p>
+        </div>
+        )}
       </form>
       { tasks.length === 0 && loadingTasks === false && <h1>Don&apos;t have any task</h1>}
       { loadingTasks ? <h3>Loading...</h3> : (
