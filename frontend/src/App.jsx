@@ -117,12 +117,35 @@ function App() {
     return setTasks(tasksOrderedAlphabetical);
   };
 
+  const handleOrderTasksByDate = async () => {
+    const getAllTasks = await requestGetAllTasks();
+    if (orderTasksDirection === 'ascending') {
+      const tasksOrderedByDate = getAllTasks.sort((a, b) => a.id - b.id);
+      return setTasks(tasksOrderedByDate);
+    }
+    const tasksOrderedByDate = getAllTasks.sort((a, b) => b.id - a.id);
+    return setTasks(tasksOrderedByDate);
+  };
+
+  const handleOrderTaskByStatus = async () => {
+    const getAllTasks = await requestGetAllTasks();
+    if (orderTasksDirection === 'ascending') {
+      const tasksOrderedByStatus = getAllTasks.sort((a, b) => (a.status < b.status ? -1 : 1));
+      return setTasks(tasksOrderedByStatus);
+    }
+    const tasksOrderedByStatus = getAllTasks.sort((a, b) => (a.status > b.status ? -1 : 1));
+    return setTasks(tasksOrderedByStatus);
+  };
+
   const handleOrderTasks = () => {
     if (orderTasksBy === 'alphabetical') {
       return handleOrderTasksByAlphabetical();
     }
-    console.log(orderTasksBy);
-    return console.log(orderTasksDirection);
+    if (orderTasksBy === 'date') {
+      return handleOrderTasksByDate();
+    }
+    console.log('status');
+    return handleOrderTaskByStatus();
   };
 
   return (
