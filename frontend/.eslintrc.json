@@ -30,7 +30,6 @@
         "react"
     ],
     "rules": {
-      "import/extensions": "off",
-      "comma-dangle": ["erro", "never"]
+      "import/extensions": "off"
     }
 }
