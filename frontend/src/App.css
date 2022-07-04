@@ -115,13 +115,16 @@ button:hover {
   border-right: 0.1em solid #ccc5b9;
   /* border-top: 0.1em solid #ccc5b9; */
   margin-bottom: 0;
-
 }
 
 .sideTaskCollum p {
   width: 100%;
-  text-align: center;
+  text-align: start;
   margin-block-end: 0.5em;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 0.6em;
+  color: #252422b2;
 }
 
 .buttonTasks {
