@@ -8,6 +8,7 @@
 
 body {
   background-color: #ccc5b9;
+  min-width: 350px;
 }
 
 .App {
@@ -16,7 +17,7 @@ body {
   align-items: center;
 }
 
-.App h1 {
+.title {
   margin-block: 1em;
 }
 
@@ -24,32 +25,70 @@ form {
   display: flex;
   flex-direction: column;
   width: 60%;
+  min-width: 350px;
   align-items: center;
   justify-content: space-between;
-  height: 200px;
+  height: 8em;
   background-color: #fffcf2;
   padding: 1em;
-  border-radius: 1em;
-  box-shadow: 0.1em 0.1em 0.5em 0.1em #403d391a;
-}
-
-button {
-  padding: 0.5em;
-  color: #fffcf2;
-  background-color: #eb5e28;
   border-radius: 0.5em;
-  border: 0.1em solid #ccc5b9;
+  box-shadow: 0.1em 0.1em 0.5em 0.1em #403d391a;
+  z-index: 1;
 }
 
 .selects {
   display: flex;
   width: 300px;
-  justify-content: space-around;
+  justify-content: space-between;
+}
+
+.selects select {
+  border-radius: 0.3em;
+  border: 0.1em solid #ccc5b9;
+  margin-left: 0.5em;
+}
+
+.selects option {
+  text-align: center;
+}
+
+.inputTask {
+  border: 0.1em solid #ccc5b9;
+  padding: 0.5em;
+  width: 21.5em;
+  border-radius: 0.3em;
+}
+
+button {
+  padding: 0.3em 0.5em;
+  color: #eb5e28;
+  /* background-color: #4934ff; */
+  border-radius: 0.5em;
+  border: 0.1em solid #eb5e28;
+  box-shadow: 0.1em 0.1em 0.5em 0.1em #403d3921;
+}
+
+button:hover {
+  color: #fffcf2;
+  background-color: #eb5e28;
+  cursor: pointer;
+  border: 0.1em solid #ffffff;
+}
+
+.noHaveTasks {
+  text-align: center;
+  background-color: #fffcf2;
+  z-index: 1;
+  padding: 1em;
+  width: 50%;
+  min-width: 250px;
+
 }
 
 .tasks {
   background-color: #fffcf2;
   width: 50%;
+  min-width: 300px;
   padding: 1em;
   border-radius: 0 0 1em 1em;
   box-shadow: 0.1em 0.1em 0.5em 0.1em #403d391a;
@@ -57,35 +96,48 @@ button {
 
 .task {
   display: flex;
-  border-bottom: 0.1em solid #ccc5b9;
+  /* border-bottom: 0.1em solid #ccc5b9; */
   margin-top: 1em;
 }
 
 .taskDescription {
-  /* background-color: aqua; */
   display: flex;
   flex-direction: column;
-  width: 100%;
-  word-break: break-all; 
   min-height: 100px;
   word-wrap: break-word;
+  padding: 0 1em 1em 1em;
+  font-weight: 500;
 }
 
 .sideTaskCollum {
-  margin-right: 1em;
-}
+  padding: 0 0.5em;
+  width: 8em;
+  border-right: 0.1em solid #ccc5b9;
+  /* border-top: 0.1em solid #ccc5b9; */
+  margin-bottom: 0;
 
-.sideTaskCollum h6 {
-  margin-block-end: 0.5em;
 }
 
 .sideTaskCollum p {
+  width: 100%;
+  text-align: center;
   margin-block-end: 0.5em;
 }
 
 .buttonTasks {
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: end;
+}
+
+.buttonTasks button {
+  margin-left: 1em;
+}
+
+.buttonEditTask button{
+  margin-left: 1em;
+}
+
+.bodyTask {
+  width: 100%;
 }
 

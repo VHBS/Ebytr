@@ -21,7 +21,7 @@ function App() {
     setLoadingTasks(true);
     const result = await requestGetAllTasks();
     setTasks(result);
-    setTimeout(() => setLoadingTasks(false), 150);
+    setLoadingTasks(false);
   };
 
   useEffect(() => {
@@ -96,16 +96,16 @@ function App() {
       <form>
         { editingTask ? <h3>Editing Task</h3> : <h3>New Task</h3> }
         <div className="selects">
-          <label htmlFor="status">
-            Status:
+          <label className="selectLabel" htmlFor="status">
+            <span>Status:</span>
             <select name="status" value={status} onChange={handleChangeStatus}>
               <option value="to do">to do</option>
               <option value="in progress">in progress</option>
               <option value="completed">completed</option>
             </select>
           </label>
-          <label htmlFor="priority">
-            Priority:
+          <label className="selectLabel" htmlFor="priority">
+            <span>Priority:</span>
             <select name="priority" value={priority} onChange={handleChangePriority}>
               <option value="low">low</option>
               <option value="medium">medium</option>
@@ -113,7 +113,7 @@ function App() {
             </select>
           </label>
         </div>
-        <input placeholder="Insert new task" value={task} onChange={handleChangeTask} />
+        <input className="inputTask" placeholder="Insert new task" value={task} onChange={handleChangeTask} />
         { blankTask && (
         <div>
           <p>Task is mandatory</p>
@@ -121,7 +121,7 @@ function App() {
         )}
         { editingTask
           ? (
-            <div>
+            <div className="buttonEditTask">
               <button type="button" onClick={handleConfirmEditTask}>Confirm</button>
               <button type="button" onClick={handleCancelEditTask}>Cancel</button>
             </div>
@@ -138,13 +138,15 @@ function App() {
                 <h6>Priority:</h6>
                 <p>{taskObj.priority}</p>
               </div>
-              <div className="taskDescription">
-                <h3>Task</h3>
-                <p>{taskObj.task}</p>
-              </div>
-              <div className="buttonTasks">
-                <button type="button" onClick={() => handleEditTask(taskObj)}>Editar</button>
-                <button type="button" onClick={async () => handleDeleteTask(taskObj.id)}>Excluir</button>
+              <div className="bodyTask">
+                <div className="taskDescription">
+                  <p>{taskObj.task}</p>
+                </div>
+                <div className="buttonTasks">
+                  <button type="button" onClick={async () => handleDeleteTask(taskObj.id)}>Finish</button>
+                  <button type="button" onClick={() => handleEditTask(taskObj)}>Edit</button>
+                  <button type="button" onClick={async () => handleDeleteTask(taskObj.id)}>Exclude</button>
+                </div>
               </div>
             </div>
           ))}
