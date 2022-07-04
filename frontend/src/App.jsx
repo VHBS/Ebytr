@@ -8,7 +8,7 @@ import {
 } from './services/requests';
 
 function App() {
-  const [blankTask, setBalnkTask] = useState(false);
+  const [blankTaskInput, setBalnkTaskInput] = useState(false);
   const [editingTask, setEditingTask] = useState(false);
   const [loadingTasks, setLoadingTasks] = useState(false);
   const [tasks, setTasks] = useState([]);
@@ -16,6 +16,8 @@ function App() {
   const [priority, setPriority] = useState('low');
   const [task, setTask] = useState('');
   const [idTask, setIdTask] = useState('');
+  const [orderTasksBy, setOrderTasksBy] = useState('date');
+  const [orderTasksDirection, setOrderTasksDirection] = useState('ascending');
 
   const fetchDataTasks = async () => {
     setLoadingTasks(true);
@@ -55,9 +57,9 @@ function App() {
 
   const handleAddNewTask = async () => {
     if (task === '') {
-      return setBalnkTask(true);
+      return setBalnkTaskInput(true);
     }
-    setBalnkTask(false);
+    setBalnkTaskInput(false);
     await requestPostTask({ task, status, priority });
     await fetchDataTasks();
     return handleResetForm();
@@ -78,16 +80,49 @@ function App() {
 
   const handleConfirmEditTask = async () => {
     if (task === '') {
-      return setBalnkTask(true);
+      return setBalnkTaskInput(true);
     }
     await requestPutTask({
       id: idTask, task, status, priority,
     });
-    setBalnkTask(false);
+    setBalnkTaskInput(false);
     handleResetForm();
     setEditingTask(false);
     await fetchDataTasks();
     return setLoadingTasks(false);
+  };
+
+  const handleFinishTask = async (taskObject) => {
+    await requestPutTask({
+      id: taskObject.id, task: taskObject.task, status: 'finished', priority: taskObject.priority,
+    });
+    fetchDataTasks();
+  };
+
+  const handleOrderTasksBy = ({ target: { value } }) => {
+    setOrderTasksBy(value);
+  };
+
+  const handleOrderTaskDirection = ({ target: { id } }) => {
+    setOrderTasksDirection(id);
+  };
+
+  const handleOrderTasksByAlphabetical = async () => {
+    const getAllTasks = await requestGetAllTasks();
+    if (orderTasksDirection === 'ascending') {
+      const tasksOrderedAlphabetical = getAllTasks.sort((a, b) => a.task.localeCompare(b.task));
+      return setTasks(tasksOrderedAlphabetical);
+    }
+    const tasksOrderedAlphabetical = getAllTasks.sort((a, b) => b.task.localeCompare(a.task));
+    return setTasks(tasksOrderedAlphabetical);
+  };
+
+  const handleOrderTasks = () => {
+    if (orderTasksBy === 'alphabetical') {
+      return handleOrderTasksByAlphabetical();
+    }
+    console.log(orderTasksBy);
+    return console.log(orderTasksDirection);
   };
 
   return (
@@ -101,7 +136,7 @@ function App() {
             <select name="status" value={status} onChange={handleChangeStatus}>
               <option value="to do">to do</option>
               <option value="in progress">in progress</option>
-              <option value="completed">completed</option>
+              <option value="finished">finished</option>
             </select>
           </label>
           <label className="selectLabel" htmlFor="priority">
@@ -114,7 +149,7 @@ function App() {
           </label>
         </div>
         <input className="inputTask" placeholder="Insert new task" value={task} onChange={handleChangeTask} />
-        { blankTask && (
+        { blankTaskInput && (
         <div>
           <p>Task is mandatory</p>
         </div>
@@ -130,9 +165,30 @@ function App() {
       { tasks.length === 0 && loadingTasks === false && <h4 className="noHaveTasks">Don&apos;t have any task</h4>}
       { loadingTasks ? <h3>Loading...</h3> : (
         <div className="tasks">
+          <div className="filters">
+            <label htmlFor="orderby">
+              <span>Order by:</span>
+              <select name="orderby" value={orderTasksBy} onChange={handleOrderTasksBy}>
+                <option value="date">date</option>
+                <option value="alphabetical">alphabetical</option>
+                <option value="status">status</option>
+              </select>
+            </label>
+            <label htmlFor="ascending">
+              <input type="radio" name="orderTaskBy" id="ascending" onClick={handleOrderTaskDirection} defaultChecked />
+              <span>ascending</span>
+            </label>
+            <label htmlFor="descending">
+              <input type="radio" name="orderTaskBy" id="descending" onClick={handleOrderTaskDirection} />
+              <span>descending</span>
+            </label>
+            <button type="button" onClick={handleOrderTasks}>Order</button>
+          </div>
           {tasks.map((taskObj) => (
             <div className="task" key={taskObj.id}>
               <div className="sideTaskCollum">
+                <h6>Date:</h6>
+                <p>{taskObj.createdAt}</p>
                 <h6>Status:</h6>
                 <p>{taskObj.status}</p>
                 <h6>Priority:</h6>
@@ -143,7 +199,7 @@ function App() {
                   <p>{taskObj.task}</p>
                 </div>
                 <div className="buttonTasks">
-                  <button type="button" onClick={async () => handleDeleteTask(taskObj.id)}>Finish</button>
+                  <button type="button" onClick={async () => handleFinishTask(taskObj)}>Finish</button>
                   <button type="button" onClick={() => handleEditTask(taskObj)}>Edit</button>
                   <button type="button" onClick={async () => handleDeleteTask(taskObj.id)}>Exclude</button>
                 </div>
