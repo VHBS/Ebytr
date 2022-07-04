@@ -99,16 +99,7 @@ function App() {
     fetchDataTasks();
   };
 
-  const handleOrderTasksBy = ({ target: { value } }) => {
-    setOrderTasksBy(value);
-  };
-
-  const handleOrderTaskDirection = ({ target: { id } }) => {
-    setOrderTasksDirection(id);
-  };
-
-  const handleOrderTasksByAlphabetical = async () => {
-    const getAllTasks = await requestGetAllTasks();
+  const handleOrderTasksByAlphabetical = async (getAllTasks) => {
     if (orderTasksDirection === 'ascending') {
       const tasksOrderedAlphabetical = getAllTasks.sort((a, b) => a.task.localeCompare(b.task));
       return setTasks(tasksOrderedAlphabetical);
@@ -117,8 +108,7 @@ function App() {
     return setTasks(tasksOrderedAlphabetical);
   };
 
-  const handleOrderTasksByDate = async () => {
-    const getAllTasks = await requestGetAllTasks();
+  const handleOrderTasksByDate = async (getAllTasks) => {
     if (orderTasksDirection === 'ascending') {
       const tasksOrderedByDate = getAllTasks.sort((a, b) => a.id - b.id);
       return setTasks(tasksOrderedByDate);
@@ -127,8 +117,7 @@ function App() {
     return setTasks(tasksOrderedByDate);
   };
 
-  const handleOrderTaskByStatus = async () => {
-    const getAllTasks = await requestGetAllTasks();
+  const handleOrderTaskByStatus = async (getAllTasks) => {
     if (orderTasksDirection === 'ascending') {
       const tasksOrderedByStatus = getAllTasks.sort((a, b) => (a.status < b.status ? -1 : 1));
       return setTasks(tasksOrderedByStatus);
@@ -137,16 +126,28 @@ function App() {
     return setTasks(tasksOrderedByStatus);
   };
 
-  const handleOrderTasks = () => {
+  const handleOrderTasks = async () => {
+    const getAllTasks = await requestGetAllTasks();
     if (orderTasksBy === 'alphabetical') {
-      return handleOrderTasksByAlphabetical();
+      return handleOrderTasksByAlphabetical(getAllTasks);
     }
     if (orderTasksBy === 'date') {
-      return handleOrderTasksByDate();
+      return handleOrderTasksByDate(getAllTasks);
     }
-    console.log('status');
-    return handleOrderTaskByStatus();
+    return handleOrderTaskByStatus(getAllTasks);
   };
+
+  const handleOrderTasksBy = ({ target: { value } }) => {
+    setOrderTasksBy(value);
+  };
+
+  const handleOrderTaskDirection = ({ target: { id } }) => {
+    setOrderTasksDirection(id);
+  };
+
+  useEffect(() => {
+    handleOrderTasks();
+  }, [orderTasksDirection, orderTasksBy]);
 
   return (
     <div className="App">
@@ -185,27 +186,33 @@ function App() {
             </div>
           ) : <button type="button" onClick={handleAddNewTask}>Add new task</button> }
       </form>
-      { tasks.length === 0 && loadingTasks === false && <h4 className="noHaveTasks">Don&apos;t have any task</h4>}
-      { loadingTasks ? <h3>Loading...</h3> : (
+      { tasks.length !== 0 && loadingTasks && <h3>Loading...</h3>}
+      { tasks.length === 0 && !loadingTasks && <h4 className="noHaveTasks">Don&apos;t have any task</h4>}
+      {tasks.length !== 0 && (
         <div className="tasks">
+          <div className="headerTasks">
+            <h2>Tasks</h2>
+            <button type="button">New task</button>
+          </div>
           <div className="filters">
-            <label htmlFor="orderby">
-              <span>Order by:</span>
-              <select name="orderby" value={orderTasksBy} onChange={handleOrderTasksBy}>
-                <option value="date">date</option>
-                <option value="alphabetical">alphabetical</option>
-                <option value="status">status</option>
-              </select>
-            </label>
-            <label htmlFor="ascending">
-              <input type="radio" name="orderTaskBy" id="ascending" onClick={handleOrderTaskDirection} defaultChecked />
-              <span>ascending</span>
-            </label>
-            <label htmlFor="descending">
-              <input type="radio" name="orderTaskBy" id="descending" onClick={handleOrderTaskDirection} />
-              <span>descending</span>
-            </label>
-            <button type="button" onClick={handleOrderTasks}>Order</button>
+            <div className="filtersInputs">
+              <label className="filtersInputsSelect" htmlFor="orderby">
+                <span>Order by:</span>
+                <select name="orderby" value={orderTasksBy} onChange={handleOrderTasksBy}>
+                  <option value="date">date</option>
+                  <option value="alphabetical">alphabetical</option>
+                  <option value="status">status</option>
+                </select>
+              </label>
+              <label className="labelInputRadio" htmlFor="ascending">
+                <input className="inputRadio" type="radio" name="orderTaskBy" id="ascending" onClick={handleOrderTaskDirection} defaultChecked />
+                <span>ascending</span>
+              </label>
+              <label htmlFor="descending">
+                <input className="inputRadio" type="radio" name="orderTaskBy" id="descending" onClick={handleOrderTaskDirection} />
+                <span>descending</span>
+              </label>
+            </div>
           </div>
           {tasks.map((taskObj) => (
             <div className="task" key={taskObj.id}>
