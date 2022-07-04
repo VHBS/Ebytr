@@ -92,7 +92,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Todolist</h1>
+      <h1 className="title">Todolist</h1>
       <form>
         { editingTask ? <h3>Editing Task</h3> : <h3>New Task</h3> }
         <div className="selects">
@@ -127,7 +127,7 @@ function App() {
             </div>
           ) : <button type="button" onClick={handleAddNewTask}>Add new task</button> }
       </form>
-      { tasks.length === 0 && loadingTasks === false && <h1>Don&apos;t have any task</h1>}
+      { tasks.length === 0 && loadingTasks === false && <h4 className="noHaveTasks">Don&apos;t have any task</h4>}
       { loadingTasks ? <h3>Loading...</h3> : (
         <div className="tasks">
           {tasks.map((taskObj) => (
