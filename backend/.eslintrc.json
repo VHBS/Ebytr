@@ -15,6 +15,9 @@
       "impliedStrict": true,
       "no-underscore-dangle": "off",
       "camelcase": "warn",
+      "implicit-arrow-linebreak": "off",
+      "consistent-return": "off",
+      "object-curly-newline": "off",
       "arrow-parens": [
         2,
         "always"
@@ -23,9 +26,6 @@
         2,
         "single"
       ],
-      "implicit-arrow-linebreak": "off",
-      "consistent-return": "off",
-      "object-curly-newline": "off",
     "max-params": [
       "error",
       4

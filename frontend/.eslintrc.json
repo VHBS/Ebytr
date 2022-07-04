@@ -10,7 +10,7 @@
       }
     }
   ],
-  "ignorePatterns": ["*.test.js"],
+  "ignorePatterns": ["*.test.js", ""],
     "env": {
         "browser": true,
         "es2021": true
@@ -30,5 +30,7 @@
         "react"
     ],
     "rules": {
+      "import/extensions": "off",
+      "comma-dangle": ["erro", "never"]
     }
 }
