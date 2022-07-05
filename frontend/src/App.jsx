@@ -237,7 +237,7 @@ function App() {
               </div>
               <div className="bodyTask">
                 <div className="taskDescription">
-                  <p>{taskObj.task}</p>
+                  <p data-testid={taskObj.task}>{taskObj.task}</p>
                 </div>
                 <div className="buttonTasks">
                   <button type="button" onClick={async () => handleFinishTask(taskObj)}>Finish</button>
