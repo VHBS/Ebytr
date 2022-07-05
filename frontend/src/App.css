@@ -21,11 +21,27 @@ body {
   margin-block: 1em;
 }
 
+.headerFormTask {
+  padding-inline: 1em;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.redButton {
+  color: #eb2828;
+  border: 0.1em solid #eb2828;
+}
+
+.redButton:hover {
+  background-color: #eb2828;
+}
+
 form {
   display: flex;
   flex-direction: column;
-  width: 60%;
-  min-width: 350px;
+  width: 50%;
+  min-width: 27em;
   align-items: center;
   justify-content: space-between;
   height: 8em;
@@ -42,13 +58,14 @@ form {
   justify-content: space-between;
 }
 
-.selects select {
+select {
   border-radius: 0.3em;
   border: 0.1em solid #ccc5b9;
   margin-left: 0.5em;
+  height: 1.4em;
 }
 
-.selects option {
+option {
   text-align: center;
 }
 
@@ -60,43 +77,66 @@ form {
 }
 
 button {
+  text-transform: uppercase;
+  font-size: 0.7em;
+  font-weight: 500;
   padding: 0.3em 0.5em;
   color: #eb5e28;
-  /* background-color: #4934ff; */
   border-radius: 0.5em;
   border: 0.1em solid #eb5e28;
   box-shadow: 0.1em 0.1em 0.5em 0.1em #403d3921;
+  height: 2em;
 }
 
 button:hover {
   color: #fffcf2;
   background-color: #eb5e28;
   cursor: pointer;
-  border: 0.1em solid #ffffff;
+  border: 0.1em solid #ccc5b9;
 }
 
 .noHaveTasks {
+  background-color: #fffcf2;
+  padding: 1em;
+  border-radius: 0.5em;
+  margin-block: 1em;
+  min-width: 27em;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.noHaveTasksMessage {
+  margin-block: 1em;
+  border-radius: 0.5em;
   text-align: center;
   background-color: #fffcf2;
-  z-index: 1;
-  padding: 1em;
-  width: 50%;
-  min-width: 250px;
+  min-width: 27em;
+}
 
+.headerTasks {
+  border-top: 0.1em solid #ccc5b9;
+  border-inline: 0.1em solid #ccc5b9;
+  border-radius: 0.5em 0.5em 0 0;
+  padding: 0.5em 0.5em 0 0.5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .tasks {
+  margin-block: 1em;
   background-color: #fffcf2;
   width: 50%;
-  min-width: 300px;
+  min-width: 27em;
   padding: 1em;
-  border-radius: 0 0 1em 1em;
+  border-radius: 0.5em;
   box-shadow: 0.1em 0.1em 0.5em 0.1em #403d391a;
 }
 
 .task {
   display: flex;
-  /* border-bottom: 0.1em solid #ccc5b9; */
   margin-top: 1em;
 }
 
@@ -113,12 +153,10 @@ button:hover {
   padding: 0 0.5em;
   width: 8em;
   border-right: 0.1em solid #ccc5b9;
-  /* border-top: 0.1em solid #ccc5b9; */
   margin-bottom: 0;
 }
 
 .sideTaskCollum p {
-  width: 100%;
   text-align: start;
   margin-block-end: 0.5em;
   text-transform: uppercase;
@@ -127,20 +165,78 @@ button:hover {
   color: #252422b2;
 }
 
+.todoStatus {
+  padding-left: 0.5em;
+  border-left: 0.5em solid #eb2828;
+}
+
+.inprogressStatus {
+  padding-left: 0.5em;
+  border-left: 0.5em solid #ffc300;
+}
+
+.finishedStatus {
+  padding-left: 0.5em;
+  border-left: 0.5em solid #2eeb28;
+}
+
+.lowPriority {
+  width: 30%;
+  border-bottom: 0.5em solid #2eeb28;
+}
+
+.mediumPriority {
+  width: 60%;
+  border-bottom: 0.5em solid #ffc300;
+}
+
+.highPriority {
+  width: 90%;
+  border-bottom: 0.5em solid #eb2828;
+}
+
 .buttonTasks {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .buttonTasks button {
-  margin-left: 1em;
+  margin-inline: 0.2em;
 }
 
 .buttonEditTask button{
-  margin-left: 1em;
+  margin-inline: 0.2em;
 }
 
 .bodyTask {
   width: 100%;
+}
+
+.filters {
+  display: flex;
+  /* margin-block: 1em; */
+  align-items: center;
+  padding-block: 0.5em;
+  justify-content: space-between;
+  flex-direction: column;
+  border-bottom: 0.1em solid #ccc5b9;
+  border-inline: 0.1em solid #ccc5b9;
+  border-radius: 0 0 0.5em 0.5em;
+}
+
+.filtersInputs {
+  display: flex;
+  justify-content: space-between;
+  width: 25em;
+  padding: 0 0 0 0.5em;
+}
+
+.filtersInputsSelect label {
+  display: flex;
+  align-items:flex-end;
+}
+
+.inputRadio {
+  margin-right: 0.2em;
 }
 

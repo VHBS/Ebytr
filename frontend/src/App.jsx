@@ -18,6 +18,7 @@ function App() {
   const [idTask, setIdTask] = useState('');
   const [orderTasksBy, setOrderTasksBy] = useState('date');
   const [orderTasksDirection, setOrderTasksDirection] = useState('ascending');
+  const [showFormTask, setShowFormTask] = useState(false);
 
   const fetchDataTasks = async () => {
     setLoadingTasks(true);
@@ -122,7 +123,7 @@ function App() {
       const tasksOrderedByStatus = getAllTasks.sort((a, b) => (a.status < b.status ? -1 : 1));
       return setTasks(tasksOrderedByStatus);
     }
-    const tasksOrderedByStatus = getAllTasks.sort((a, b) => (a.status > b.status ? -1 : 1));
+    const tasksOrderedByStatus = getAllTasks.sort((a, b) => (a.status < b.status ? 1 : -1));
     return setTasks(tasksOrderedByStatus);
   };
 
@@ -152,47 +153,57 @@ function App() {
   return (
     <div className="App">
       <h1 className="title">Todolist</h1>
-      <form>
-        { editingTask ? <h3>Editing Task</h3> : <h3>New Task</h3> }
-        <div className="selects">
-          <label className="selectLabel" htmlFor="status">
-            <span>Status:</span>
-            <select name="status" value={status} onChange={handleChangeStatus}>
-              <option value="to do">to do</option>
-              <option value="in progress">in progress</option>
-              <option value="finished">finished</option>
-            </select>
-          </label>
-          <label className="selectLabel" htmlFor="priority">
-            <span>Priority:</span>
-            <select name="priority" value={priority} onChange={handleChangePriority}>
-              <option value="low">low</option>
-              <option value="medium">medium</option>
-              <option value="high">high</option>
-            </select>
-          </label>
-        </div>
-        <input className="inputTask" placeholder="Insert new task" value={task} onChange={handleChangeTask} />
-        { blankTaskInput && (
-        <div>
-          <p>Task is mandatory</p>
-        </div>
-        )}
-        { editingTask
-          ? (
-            <div className="buttonEditTask">
-              <button type="button" onClick={handleConfirmEditTask}>Confirm</button>
-              <button type="button" onClick={handleCancelEditTask}>Cancel</button>
-            </div>
-          ) : <button type="button" onClick={handleAddNewTask}>Add new task</button> }
-      </form>
+      { showFormTask && (
+        <form>
+          <div className="headerFormTask">
+            { editingTask ? <h3>Editing Task</h3> : <h3>New Task</h3> }
+            <button className="redButton" type="button" onClick={() => setShowFormTask(false)}>X</button>
+          </div>
+          <div className="selects">
+            <label className="selectLabel" htmlFor="status">
+              <span>Status:</span>
+              <select name="status" value={status} onChange={handleChangeStatus}>
+                <option value="to do">to do</option>
+                <option value="in progress">in progress</option>
+                <option value="finished">finished</option>
+              </select>
+            </label>
+            <label className="selectLabel" htmlFor="priority">
+              <span>Priority:</span>
+              <select name="priority" value={priority} onChange={handleChangePriority}>
+                <option value="low">low</option>
+                <option value="medium">medium</option>
+                <option value="high">high</option>
+              </select>
+            </label>
+          </div>
+          <input className="inputTask" placeholder="Insert new task" value={task} onChange={handleChangeTask} />
+          { blankTaskInput && (
+          <div>
+            <p>Task is mandatory</p>
+          </div>
+          )}
+          { editingTask
+            ? (
+              <div className="buttonEditTask">
+                <button type="button" onClick={handleConfirmEditTask}>Confirm</button>
+                <button type="button" onClick={handleCancelEditTask}>Cancel</button>
+              </div>
+            ) : <button type="button" onClick={handleAddNewTask}>Add new task</button> }
+        </form>
+      ) }
       { tasks.length !== 0 && loadingTasks && <h3>Loading...</h3>}
-      { tasks.length === 0 && !loadingTasks && <h4 className="noHaveTasks">Don&apos;t have any task</h4>}
+      { tasks.length === 0 && !loadingTasks && (
+        <div className="noHaveTasks">
+          <h4 className="noHaveTasksMessage">Don&apos;t have any task</h4>
+          <button type="button" onClick={() => setShowFormTask(true)}>New task</button>
+        </div>
+      )}
       {tasks.length !== 0 && (
         <div className="tasks">
           <div className="headerTasks">
             <h2>Tasks</h2>
-            <button type="button">New task</button>
+            <button type="button" onClick={() => setShowFormTask(true)}>New task</button>
           </div>
           <div className="filters">
             <div className="filtersInputs">
@@ -220,9 +231,9 @@ function App() {
                 <h6>Date:</h6>
                 <p>{taskObj.createdAt}</p>
                 <h6>Status:</h6>
-                <p>{taskObj.status}</p>
+                <p className={`${taskObj.status.split(' ').join('')}Status`}>{taskObj.status}</p>
                 <h6>Priority:</h6>
-                <p>{taskObj.priority}</p>
+                <p className={`${taskObj.priority}Priority`}>{taskObj.priority}</p>
               </div>
               <div className="bodyTask">
                 <div className="taskDescription">
@@ -231,7 +242,7 @@ function App() {
                 <div className="buttonTasks">
                   <button type="button" onClick={async () => handleFinishTask(taskObj)}>Finish</button>
                   <button type="button" onClick={() => handleEditTask(taskObj)}>Edit</button>
-                  <button type="button" onClick={async () => handleDeleteTask(taskObj.id)}>Exclude</button>
+                  <button className="redButton" type="button" onClick={async () => handleDeleteTask(taskObj.id)}>Delete</button>
                 </div>
               </div>
             </div>
