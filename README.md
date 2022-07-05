@@ -16,7 +16,7 @@ The project is still in development, some updates needed:
 
 Before starting, make sure you've met the following requirements:
 
-* Have you installed the latest version of `node` and `docker/docker compose`.
+* Have you installed the lts version of `node` and `docker/docker compose`.
 
 ## 🚀 Installing Ebytr Todolist
 
