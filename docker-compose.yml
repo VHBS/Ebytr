@@ -1,0 +1,57 @@
+version: '3.9'
+services:
+  frontend:
+    build: ./frontend
+    platform: linux/x86_64
+    restart: always
+    container_name: app_frontend
+    volumes:
+      - './frontend/src:/app/src'
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3000"]
+      timeout: 10s
+      retries: 5
+  backend:
+    build: ./backend
+    container_name: app_backend
+    platform: linux/x86_64
+    restart: 'always'
+    command: npm run dev
+    ports:
+      - 3001:3001
+    volumes:
+      - './backend/src:/app/src'
+    environment:
+      - PORT=3001
+      - DB_USER=root
+      - DB_PASS=123456
+      - DB_HOST=db_mysql
+      - DB_NAME=EBYTR
+      - DB_PORT=3306
+    depends_on:
+      db_mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3001"]
+      timeout: 10s
+      retries: 5
+  db_mysql:
+    image: mysql:8.0.21
+    container_name: db_mysql
+    platform: linux/x86_64
+    restart: 'always'
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        timeout: 15s
+        retries: 5
+    cap_add:
+        - SYS_NICE
