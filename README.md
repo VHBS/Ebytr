@@ -22,10 +22,18 @@ Before starting, make sure you've met the following requirements:
 
 To install the project, follow these steps:
 
+* Check if ports 3000, 3001 and 3306 are unused.
+
 * Clone this repository:
 ```
 git clone git@github.com:VHBS/Ebytr.git
 ```
+
+* Go to cloned diretory:
+```
+cd Ebytr
+```
+
 * Run the command:
 ```
 npm run compose:up
